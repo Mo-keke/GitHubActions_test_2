@@ -20,7 +20,8 @@ RETRY_INTERVAL=60   # 秒単位の待機時間
 for ((i=1; i<=MAX_RETRIES; i++)); do
     echo "🔍 Checking available mobile app batch devices... (Attempt $i/$MAX_RETRIES)"
 
-    RESPONSE=.//magicpod-api-client cloud-devices
+    RESPONSE=$(curl -s -H "Authorization: Token ${MAGICPOD_API_TOKEN}" \
+        "https://app.magicpod.com/api/v1.0/MagicPod_Sakakibara/cloud-devices/")
 
     echo "Raw API response: $RESPONSE"
 
