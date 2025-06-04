@@ -22,7 +22,7 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
 
     AVAILABLE=$(curl -s -H "Authorization: Token ${MAGICPOD_API_TOKEN}" \
         "https://app.magicpod.com/api/v1.0/cloud-devices/status/" \
-        | jq '.mobile_app.batch_test_run.available')
+        | jq '.browser.batch_test_run.available')
 
     if [ "$AVAILABLE" -ge 1 ]; then
         echo "✅ Available devices found: $AVAILABLE"
