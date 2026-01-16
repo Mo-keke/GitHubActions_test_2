@@ -41,5 +41,6 @@ done
 # ✅ バッチ実行
 echo "🚀 Running MagicPod batch run..."
 STATUS_CODE=$(curl -sS -o /dev/stderr -w %{http_code} -X POST https://app.magicpod.com/api/v1.0/${MAGICPOD_ORGANIZATION}/${MAGICPOD_PROJECT}/cross-batch-run/ \
- -d "{\"test_settings_number\":5,\"branch_name\":\"main\"}")
+ -H "Authorization: Token ${MAGICPOD_API_TOKEN}" \
+ -d "{\"test_settings_number\":${TEST_SETTING_NUMBER},\"branch_name\":\"main\"}")
 test "$STATUS_CODE" = "200"
