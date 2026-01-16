@@ -40,7 +40,17 @@ done
 
 # ✅ バッチ実行
 echo "🚀 Running MagicPod batch run..."
-STATUS_CODE=$(curl -sS -o /dev/stderr -w %{http_code} -X POST https://app.magicpod.com/api/v1.0/${MAGICPOD_ORGANIZATION}/${MAGICPOD_PROJECT}/cross-batch-run/ \
- -H "Authorization: Token ${MAGICPOD_API_TOKEN}" \
- -d "{\"test_settings_number\":${TEST_SETTING_NUMBER},\"branch_name\":\"main\"}")
-test "$STATUS_CODE" = "200"
+RESP="$(
+  curl -sS -X POST "https://app.magicpod.com/api/v1.0/${MAGICPOD_ORGANIZATION}/${MAGICPOD_PROJECT}/cross-batch-run/" \
+    -H "Authorization: Token ${MAGICPOD_API_TOKEN}" \
+    -H "Content-Type: application/json" \
+    -d "{\"test_settings_number\":${TEST_SETTING_NUMBER},\"branch_name\":\"main\"}"
+)"
+
+batch_run_number="$(echo "$RESP" | jq -r '.batch_run_number')"
+echo "batch_run_number=${batch_run_number}"
+
+curl -sS -X GET \
+  "https://app.magicpod.com/api/v1.0/${MAGICPOD_ORGANIZATION}/${MAGICPOD_PROJECT}/batch-run/${batch_run_number}/?errors=true" \
+  -H "accept: application/json" \
+  -H "Authorization: Token ${MAGICPOD_API_TOKEN}"
