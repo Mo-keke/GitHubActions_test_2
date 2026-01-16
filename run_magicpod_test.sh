@@ -50,7 +50,12 @@ RESP="$(
 batch_run_number="$(echo "$RESP" | jq -r '.batch_run_number')"
 echo "batch_run_number=${batch_run_number}"
 
-curl -sS -X GET \
-  "https://app.magicpod.com/api/v1.0/${MAGICPOD_ORGANIZATION}/${MAGICPOD_PROJECT}/batch-run/${batch_run_number}/?errors=true" \
-  -H "accept: application/json" \
-  -H "Authorization: Token ${MAGICPOD_API_TOKEN}"
+status="$(
+  curl -sS -X GET \
+    "https://app.magicpod.com/api/v1.0/${MAGICPOD_ORGANIZATION}/${MAGICPOD_PROJECT}/batch-run/${batch_run_number}/?errors=true" \
+    -H "accept: application/json" \
+    -H "Authorization: Token ${MAGICPOD_API_TOKEN}" \
+  | jq -r '.status'
+)"
+
+echo "status=${status}"
