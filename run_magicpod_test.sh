@@ -50,6 +50,8 @@ RESP="$(
 batch_run_number="$(echo "$RESP" | jq -r '.batch_run_number')"
 echo "batch_run_number=${batch_run_number}"
 
+sleep 30
+
 status="$(
   curl -sS -X GET \
     "https://app.magicpod.com/api/v1.0/${MAGICPOD_ORGANIZATION}/${MAGICPOD_PROJECT}/batch-run/${batch_run_number}/?errors=true" \
